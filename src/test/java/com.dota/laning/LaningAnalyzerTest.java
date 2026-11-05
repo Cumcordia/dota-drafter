@@ -1,8 +1,11 @@
-
 package com.dota.laning;
 
 import com.dota.model.Hero;
 import org.junit.jupiter.api.Test;
+import com.dota.model.MatchDraft;
+import com.dota.model.LaningResult;
+import com.dota.draft.*;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -62,5 +65,31 @@ class LaningAnalyzerTest {
         assertEquals(4.0, result);
     }
 
+
+    @Test
+    void shouldAnalyzeFullDraft() {
+        MatchDraft draft = new MatchDraft(
+                List.of(
+                        new CarryFactory().createHero("juggernaut"),
+                        new MidFactory().createHero("puck"),
+                        new OfflaneFactory().createHero("axe"),
+                        new SoftSupportFactory().createHero("tusk"),
+                        new HardSupportFactory().createHero("lion")
+                ),
+                List.of(
+                        new CarryFactory().createHero("luna"),
+                        new MidFactory().createHero("invoker"),
+                        new OfflaneFactory().createHero("mars"),
+                        new SoftSupportFactory().createHero("rubick"),
+                        new HardSupportFactory().createHero("dazzle")
+                )
+        );
+
+        LaningResult result = new LaningAnalyzer().analyze(draft);
+
+        assertEquals(0.0, result.top().diff());
+        assertEquals(1.0, result.mid().diff());
+        assertEquals(0.0, result.bottom().diff());
+    }
 
 }
