@@ -1,6 +1,6 @@
 package dota.dota.analysis;
 
-import com.example.dota.model.Hero;
+import dota.dota.model.Hero;
 
 public class TempoGreedBase implements ScoreComponent {
     @Override
