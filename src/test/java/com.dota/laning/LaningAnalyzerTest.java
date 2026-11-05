@@ -62,7 +62,7 @@ class LaningAnalyzerTest {
                 direCarry, direSupport
         );
 
-        assertEquals(4.0, result);
+        assertEquals(6.0, result);
     }
 
 
@@ -87,9 +87,17 @@ class LaningAnalyzerTest {
 
         LaningResult result = new LaningAnalyzer().analyze(draft);
 
-        assertEquals(0.0, result.top().diff());
+        assertEquals(2.0, result.top().diff());
         assertEquals(1.0, result.mid().diff());
         assertEquals(0.0, result.bottom().diff());
     }
+    @Test
+    void shouldCalculateLaneSynergy() {
+        Hero axe = new OfflaneFactory().createHero("axe");
+        Hero tusk = new SoftSupportFactory().createHero("tusk");
 
+        LaningAnalyzer analyzer = new LaningAnalyzer();
+
+        assertEquals(2.0, analyzer.calculateSynergy(axe, tusk));
+    }
 }

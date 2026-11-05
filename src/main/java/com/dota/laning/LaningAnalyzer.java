@@ -19,14 +19,14 @@ public class LaningAnalyzer {
             Hero dire1, Hero dire2) {
 
         double radiantPower =
-                radiant1.lanePower() + radiant2.lanePower();
+                radiant1.lanePower() + radiant2.lanePower()
+                        + calculateSynergy(radiant1, radiant2);
 
         double direPower =
-                dire1.lanePower() + dire2.lanePower();
+                dire1.lanePower() + dire2.lanePower()
+                        + calculateSynergy(dire1, dire2);
 
         return radiantPower - direPower;
-
-
     }
 
     public LaningResult analyze(MatchDraft draft) {
@@ -70,5 +70,25 @@ public class LaningAnalyzer {
                 );
     }
 
+    public double calculateSynergy(Hero first, Hero second) {
+        String a = first.id();
+        String b = second.id();
 
+        if ((a.equals("axe") && b.equals("tusk"))
+                || (a.equals("tusk") && b.equals("axe"))) {
+            return 2.0;
+        }
+
+        if ((a.equals("juggernaut") && b.equals("crystal_maiden"))
+                || (a.equals("crystal_maiden") && b.equals("juggernaut"))) {
+            return 1.5;
+        }
+
+        if ((a.equals("mars") && b.equals("hoodwink"))
+                || (a.equals("hoodwink") && b.equals("mars"))) {
+            return 1.5;
+        }
+
+        return 0.0;
+    }
 }
