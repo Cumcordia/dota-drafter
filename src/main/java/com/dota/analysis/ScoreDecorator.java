@@ -1,4 +1,4 @@
-package dota.dota.analysis;
+package com.dota.analysis;
 
 public abstract class ScoreDecorator implements ScoreComponent {
     private final ScoreComponent inner;

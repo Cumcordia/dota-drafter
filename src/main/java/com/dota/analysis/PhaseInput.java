@@ -1,5 +1,5 @@
-package dota.dota.analysis;
+package com.dota.analysis;
 
-import dota.dota.model.MatchDraft;
+import com.dota.model.MatchDraft;
 
 public record PhaseInput(MatchDraft draft, double overallLaningDiff, double midgameDiff) {}

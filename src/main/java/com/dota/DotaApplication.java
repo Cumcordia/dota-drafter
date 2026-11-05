@@ -1,4 +1,4 @@
-package dota.dota;
+package com.dota;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

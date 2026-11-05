@@ -1,11 +1,12 @@
-package dota.dota;
+package com.dota;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import dota.dota.model.*;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+
+import com.dota.model.*;
 
 class PhaseFormulaTest {
 

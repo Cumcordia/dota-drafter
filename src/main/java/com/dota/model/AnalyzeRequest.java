@@ -1,4 +1,4 @@
-package dota.dota.model;
+package com.dota.model;
 
 import java.util.List;
 

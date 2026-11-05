@@ -1,9 +1,10 @@
-package dota.dota.analysis;
+package com.dota.analysis;
 
-import dota.dota.analysis.*;
-import dota.dota.laning.LaningAnalyzer;
-import dota.dota.model.AnalyzeRequest;
-import dota.dota.model.MatchDraft;
+import com.dota.analysis.*;
+import com.dota.laning.LaningAnalyzer;
+import com.dota.model.AnalyzeRequest;
+import com.dota.model.MatchDraft;
+
 import java.util.function.Function;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

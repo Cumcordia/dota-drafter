@@ -1,11 +1,12 @@
-package dota.dota.controllers;
+package com.dota.controllers;
 
-import dota.dota.analysis.AnalysisFacade;
-import dota.dota.model.*;
 import java.util.Map;
 import java.util.function.Function;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import com.dota.analysis.AnalysisFacade;
+import com.dota.model.*;
 
 @RestController
 @RequestMapping("/api/analyze")

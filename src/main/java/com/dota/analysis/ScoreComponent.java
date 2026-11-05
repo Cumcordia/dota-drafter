@@ -1,9 +1,10 @@
-package dota.dota.analysis;
+package com.dota.analysis;
 
-import dota.dota.model.Hero;
-import dota.dota.model.MatchDraft;
 import java.util.List;
 import java.util.function.ToDoubleFunction;
+
+import com.dota.model.Hero;
+import com.dota.model.MatchDraft;
 
 public interface ScoreComponent {
     double value(PhaseInput in);

@@ -1,4 +1,4 @@
-package dota.dota.analysis;
+package com.dota.analysis;
 
 public class MidgameCarryoverModifier extends ScoreDecorator {
     private final double coef;

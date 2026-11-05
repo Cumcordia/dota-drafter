@@ -1,7 +1,7 @@
-package dota.dota.analysis;
+package com.dota.analysis;
 
 
-import dota.dota.model.Hero;
+import com.dota.model.Hero;
 
 public class ScalingBase implements ScoreComponent {
     @Override

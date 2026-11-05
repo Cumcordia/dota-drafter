@@ -1,6 +1,6 @@
-package dota.dota.analysis;
+package com.dota.analysis;
 
-import dota.dota.model.PhaseResult;
+import com.dota.model.PhaseResult;
 
 public interface PhaseAnalysisStrategy {
     PhaseResult analyze(PhaseInput in);

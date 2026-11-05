@@ -1,9 +1,10 @@
-package dota.dota.analysis;
+package com.dota.analysis;
 
-import dota.dota.model.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
+import com.dota.model.*;
 
 public class AnalysisFacade {
     public static final double THRESHOLD_X = 1.5;

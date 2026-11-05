@@ -1,4 +1,4 @@
-package dota.dota.model;
+package com.dota.model;
 
 public record PhaseResult(double diff, String label) {
     public static PhaseResult of(double diff) {

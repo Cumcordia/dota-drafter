@@ -1,12 +1,11 @@
-package dota.dota.analysis;
+package com.dota.analysis;
 
-import dota.dota.model.PhaseResult;
+import com.dota.model.PhaseResult;
 
 public class MidgameStrategy implements PhaseAnalysisStrategy {
     private final ScoreComponent score;
 
     public MidgameStrategy() {
-        // Коэффициенты - стартовая гипотеза из ТЗ, не статистика.
         ScoreComponent s = new TempoGreedBase();
         s = new TeamfightModifier(s, 0.4);
         s = new PushModifier(s, 0.2);
