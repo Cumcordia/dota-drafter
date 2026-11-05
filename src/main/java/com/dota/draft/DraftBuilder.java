@@ -25,6 +25,7 @@ public class DraftBuilder {
         }
 
         heroes.add(hero);
+        subject.notifyHeroAdded(hero);
         return this;
     }
 
@@ -35,4 +36,12 @@ public class DraftBuilder {
 
         return List.copyOf(heroes);
     }
+
+    private final DraftSubject subject = new DraftSubject();
+
+    public void subscribe(DraftObserver observer) {
+        subject.subscribe(observer);
+    }
+
+
 }
