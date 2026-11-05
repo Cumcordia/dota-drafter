@@ -100,4 +100,21 @@ class LaningAnalyzerTest {
 
         assertEquals(2.0, analyzer.calculateSynergy(axe, tusk));
     }
+
+
+    @Test
+    void shouldCalculateMatchupBonus() {
+        Hero axe = new OfflaneFactory().createHero("axe");
+        Hero phantomAssassin = new CarryFactory()
+                .createHero("phantom assassin");
+
+        LaningAnalyzer analyzer = new LaningAnalyzer();
+
+        assertEquals(1.5,
+                analyzer.calculateMatchupBonus(axe, phantomAssassin));
+
+        assertEquals(-1.5,
+                analyzer.calculateMatchupBonus(phantomAssassin, axe));
+    }
+
 }

@@ -91,4 +91,36 @@ public class LaningAnalyzer {
 
         return 0.0;
     }
+
+    public double calculateMatchupBonus(Hero radiant, Hero dire) {
+        String a = radiant.id();
+        String b = dire.id();
+
+        if (a.equals("axe") && b.equals("phantom_assassin")) {
+            return 1.5;
+        }
+
+        if (a.equals("phantom_assassin") && b.equals("axe")) {
+            return -1.5;
+        }
+
+        if (a.equals("anti_mage") && b.equals("storm_spirit")) {
+            return 1.5;
+        }
+
+        if (a.equals("storm_spirit") && b.equals("anti_mage")) {
+            return -1.5;
+        }
+
+        if (a.equals("underlord") && b.equals("phantom_assassin")) {
+            return 1.0;
+        }
+
+        if (a.equals("phantom_assassin") && b.equals("underlord")) {
+            return -1.0;
+        }
+
+        return 0.0;
+    }
+
 }
