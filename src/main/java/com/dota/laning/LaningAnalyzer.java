@@ -13,7 +13,6 @@ public class LaningAnalyzer {
         return radiant.lanePower() - dire.lanePower();
     }
 
-
     public double calculateDuoLane(
             Hero radiant1, Hero radiant2,
             Hero dire1, Hero dire2) {
@@ -26,8 +25,13 @@ public class LaningAnalyzer {
                 dire1.lanePower() + dire2.lanePower()
                         + calculateSynergy(dire1, dire2);
 
-        return radiantPower - direPower;
+        double matchupBonus = calculateDuoMatchups(
+                radiant1, radiant2, dire1, dire2
+        );
+
+        return radiantPower - direPower + matchupBonus;
     }
+
 
     public LaningResult analyze(MatchDraft draft) {
         List<Hero> radiant = draft.radiant();
@@ -40,10 +44,11 @@ public class LaningAnalyzer {
                 getHero(dire, 5)
         );
 
-        double mid = calculateLanePower(
-                getHero(radiant, 2),
-                getHero(dire, 2)
-        );
+        Hero radiantMid = getHero(radiant, 2);
+        Hero direMid = getHero(dire, 2);
+
+        double mid = calculateLanePower(radiantMid, direMid)
+                + calculateMatchupBonus(radiantMid, direMid);
 
         double bottom = calculateDuoLane(
                 getHero(radiant, 1),
@@ -122,5 +127,20 @@ public class LaningAnalyzer {
 
         return 0.0;
     }
+
+    private double calculateDuoMatchups(
+            Hero radiant1, Hero radiant2,
+            Hero dire1, Hero dire2) {
+
+        double bonus = 0;
+
+        bonus += calculateMatchupBonus(radiant1, dire1);
+        bonus += calculateMatchupBonus(radiant1, dire2);
+        bonus += calculateMatchupBonus(radiant2, dire1);
+        bonus += calculateMatchupBonus(radiant2, dire2);
+
+        return bonus;
+    }
+
 
 }

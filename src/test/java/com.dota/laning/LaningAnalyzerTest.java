@@ -117,4 +117,21 @@ class LaningAnalyzerTest {
                 analyzer.calculateMatchupBonus(phantomAssassin, axe));
     }
 
+
+    @Test
+    void shouldApplyMatchupBonus() {
+        Hero axe = new OfflaneFactory().createHero("axe");
+        Hero tusk = new SoftSupportFactory().createHero("tusk");
+        Hero pa = new CarryFactory().createHero("phantom assassin");
+        Hero lion = new HardSupportFactory().createHero("lion");
+
+        LaningAnalyzer analyzer = new LaningAnalyzer();
+
+        double result = analyzer.calculateDuoLane(
+                axe, tusk, pa, lion
+        );
+
+        assertEquals(6.5, result);
+    }
+
 }
