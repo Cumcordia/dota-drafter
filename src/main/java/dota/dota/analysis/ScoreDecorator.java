@@ -8,6 +8,5 @@ public abstract class ScoreDecorator implements ScoreComponent {
     @Override
     public final double value(PhaseInput in) { return inner.value(in) + term(in); }
 
-    /** Одно отдельное слагаемое формулы. */
     protected abstract double term(PhaseInput in);
 }

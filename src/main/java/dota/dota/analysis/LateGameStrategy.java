@@ -1,15 +1,14 @@
 package dota.dota.analysis;
 
-import dota.dota.draft.Hero;
+import dota.dota.model.PhaseResult;
 
 public class LategameStrategy implements PhaseAnalysisStrategy {
     private final ScoreComponent score;
 
     public LategameStrategy() {
-        ScoreComponent s = new BaseScore();
-        s = new StatDiffTerm(s, Hero::scaling, 1.0);
-        s = new StatDiffTerm(s, Hero::teamfight, 0.25);
-        s = new MidgameCarryTerm(s, 0.20);
+        ScoreComponent s = new ScalingBase();
+        s = new TeamfightModifier(s, 0.25);
+        s = new MidgameCarryoverModifier(s, 0.20);
         this.score = s;
     }
 

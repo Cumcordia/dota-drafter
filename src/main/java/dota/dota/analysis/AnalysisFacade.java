@@ -1,16 +1,12 @@
 package dota.dota.analysis;
 
-import dota.dota.draft.LaningResult;
-import dota.dota.draft.MatchDraft;
+import dota.dota.model.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
 public class AnalysisFacade {
     public static final double THRESHOLD_X = 1.5;
-
-    public record AnalysisResult(LaningResult laning, PhaseResult midgame,
-                                 PhaseResult lategame, List<String> summary) {}
 
     private final Function<MatchDraft, LaningResult> laningStep; // модуль A
     private final PhaseAnalysisStrategy midStrategy;
@@ -24,16 +20,29 @@ public class AnalysisFacade {
         this.lateStrategy = lateStrategy;
     }
 
-    public AnalysisResult analyze(MatchDraft draft) {
-        LaningResult laning = laningStep.apply(draft);
-        PhaseResult mid = midStrategy.analyze(new PhaseInput(draft, laning.overallDiff(), 0));
-        PhaseResult late = lateStrategy.analyze(new PhaseInput(draft, laning.overallDiff(), mid.diff()));
+    /** Драфт уже провалидирован A при сборке MatchDraft. */
+    public AnalysisResponse analyze(MatchDraft draft) {
+        LaningResult laning = laningStep.apply(draft);                       // 1) laning (один раз)
+        PhaseResult mid = midStrategy.analyze(
+                new PhaseInput(draft, laning.overallDiff(), 0));             // 2) mid <- laning
+        PhaseResult late = lateStrategy.analyze(
+                new PhaseInput(draft, laning.overallDiff(), mid.diff()));    // 3) late <- mid
+        return new AnalysisResponse(laning, mid, late, THRESHOLD_X, summary(draft, mid));
+    }
 
-        List<String> summary = new ArrayList<>();
+    private List<String> summary(MatchDraft d, PhaseResult mid) {
+        List<String> s = new ArrayList<>();
+        addSide(s, ScoreComponent.diffAvg(d, Hero::tempo), "better tempo");
+        addSide(s, ScoreComponent.diffAvg(d, Hero::scaling), "better scaling");
         if (Math.abs(mid.diff()) >= THRESHOLD_X) {
-            summary.add("Сильный перевес по темпу в мидгейме (|diff| >= " + THRESHOLD_X
-                    + "): это предупреждение, а не гарантированная победа.");
+            String side = mid.diff() > 0 ? "Radiant" : "Dire";
+            s.add("Сильный темповый перевес у " + side
+                    + "; сопернику будет сложнее реализовать лейт");
         }
-        return new AnalysisResult(laning, mid, late, summary);
+        return s;
+    }
+
+    private static void addSide(List<String> s, double diff, String what) {
+        if (Math.abs(diff) >= 0.5) s.add((diff > 0 ? "Radiant" : "Dire") + " has " + what);
     }
 }
