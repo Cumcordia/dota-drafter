@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const API_URL = '/api/analyze';
+  const API_URL = 'http://127.0.0.1:8080/api/analyze';
   const IMG_DIR = 'img/heroes/';
   const IMG_EXT = '.png';
   const BAR_RANGE = 3;
@@ -13,19 +13,9 @@
   const LANES = ['TOP', 'MID', 'BOTTOM'];
   const LANE_TITLES = { TOP: 'Top', MID: 'Mid', BOTTOM: 'Bottom' };
 
-  const HEROES = [
-    ['anti-mage', 'Anti-Mage', 1], ['juggernaut', 'Juggernaut', 1], ['phantom-assassin', 'Phantom Assassin', 1],
-    ['luna', 'Luna', 1], ['faceless-void', 'Faceless Void', 1], ['drow-ranger', 'Drow Ranger', 1],
-    ['invoker', 'Invoker', 2], ['puck', 'Puck', 2], ['storm-spirit', 'Storm Spirit', 2],
-    ['queen-of-pain', 'Queen of Pain', 2], ['sniper', 'Sniper', 2], ['shadow-fiend', 'Shadow Fiend', 2],
-    ['axe', 'Axe', 3], ['mars', 'Mars', 3], ['tidehunter', 'Tidehunter', 3],
-    ['centaur-warrunner', 'Centaur Warrunner', 3], ['underlord', 'Underlord', 3], ['bristleback', 'Bristleback', 3],
-    ['earthshaker', 'Earthshaker', 4], ['tusk', 'Tusk', 4], ['rubick', 'Rubick', 4],
-    ['nyx-assassin', 'Nyx Assassin', 4], ['hoodwink', 'Hoodwink', 4], ['spirit-breaker', 'Spirit Breaker', 4],
-    ['crystal-maiden', 'Crystal Maiden', 5], ['lion', 'Lion', 5], ['dazzle', 'Dazzle', 5],
-    ['warlock', 'Warlock', 5], ['witch-doctor', 'Witch Doctor', 5], ['shadow-shaman', 'Shadow Shaman', 5]
-  ].map(([id, name, position]) => ({ id, name, position }));
-  const HERO_BY_ID = new Map(HEROES.map(h => [h.id, h]));
+  let HEROES = [];
+  let HERO_BY_ID = new Map();
+  const norm = id => String(id).replace(/_/g, '-');
 
   const SLOT_POSITIONS = {
     radiant: { TOP: [3, 4], MID: [2], BOTTOM: [1, 5] },
@@ -132,7 +122,7 @@
   }
 
   function fillDemo() {
-    slots.forEach(s => { s.hero = HERO_BY_ID.get(DEMO[s.team][s.position]); });
+    slots.forEach(s => { s.hero = HERO_BY_ID.get(DEMO[s.team][s.position]) || null; });
     active = -1;
     update();
   }
@@ -211,7 +201,7 @@
         throw new Error('Cannot reach the server');
       }
       let body = null;
-      try { body = await res.json(); } catch (e) { /* пустое тело */ }
+      try { body = await res.json(); } catch (e) {}
       if (!res.ok) throw new Error((body && (body.error || body.message)) || 'Server error ' + res.status);
       renderResult(body);
     } catch (e) {
@@ -299,10 +289,27 @@
     $('result').hidden = false;
   }
 
-  buildPool();
+  async function loadHeroes() {
+    const res = await fetch('http://127.0.0.1:8080/api/heroes');
+    if (!res.ok) throw new Error('Heroes request failed: ' + res.status);
+    return res.json();
+  }
+
   buildTeams();
   analyzeBtn.addEventListener('click', analyze);
   $('demo').addEventListener('click', fillDemo);
   $('reset').addEventListener('click', reset);
+  $('demo').disabled = true;
   update();
+
+  loadHeroes().then(list => {
+    HEROES = list;
+    HERO_BY_ID = new Map(list.map(h => [norm(h.id), h]));
+    buildPool();
+    $('demo').disabled = false;
+    update();
+  }).catch(e => {
+    $('error').textContent = 'Cannot load heroes: ' + e.message;
+    $('error').hidden = false;
+  });
 })();

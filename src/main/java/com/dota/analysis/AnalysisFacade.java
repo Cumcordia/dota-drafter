@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import com.dota.model.*;
+import com.dota.model.AnalysisResponse;
+import com.dota.model.Hero;
+import com.dota.model.LaningResult;
+import com.dota.model.MatchDraft;
+import com.dota.model.PhaseResult;
 
 public class AnalysisFacade {
     public static final double THRESHOLD_X = 1.5;
@@ -36,8 +40,8 @@ public class AnalysisFacade {
         addSide(s, ScoreComponent.diffAvg(d, Hero::scaling), "better scaling");
         if (Math.abs(mid.diff()) >= THRESHOLD_X) {
             String side = mid.diff() > 0 ? "Radiant" : "Dire";
-            s.add("Сильный темповый перевес у " + side
-                    + "; сопернику будет сложнее реализовать лейт");
+            s.add("Strong tempo advantage " + side
+                    + "; it will be harder for the opponent to capitalize on the late game.");
         }
         return s;
     }

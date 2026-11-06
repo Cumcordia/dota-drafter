@@ -1,15 +1,18 @@
 package com.dota.controllers;
 
-import com.dota.model.AnalyzeRequest;
-import com.dota.model.MatchDraft;
+import java.util.List;
+import java.util.function.Function;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.function.Function;
+import com.dota.model.AnalyzeRequest;
+import com.dota.model.MatchDraft;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/draft")
 public class DraftValidationController {
