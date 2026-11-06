@@ -43,7 +43,6 @@ class AnalyzeApiTest {
 
     @Test
     void incompleteDraft_returns400() throws Exception {
-        // предполагает, что DraftBuilder A бросает IllegalArgumentException
         mvc.perform(post("/api/analyze").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"radiant\":[],\"dire\":[]}"))
            .andExpect(status().isBadRequest());

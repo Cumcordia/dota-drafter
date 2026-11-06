@@ -1,7 +1,6 @@
 package com.dota.laning;
 
 import com.dota.model.Hero;
-import com.dota.model.Hero;
 import com.dota.model.MatchDraft;
 import com.dota.model.LaneResult;
 import com.dota.model.LaningResult;

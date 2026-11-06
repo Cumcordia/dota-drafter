@@ -9,7 +9,7 @@ import com.dota.model.*;
 public class AnalysisFacade {
     public static final double THRESHOLD_X = 1.5;
 
-    private final Function<MatchDraft, LaningResult> laningStep; // модуль A
+    private final Function<MatchDraft, LaningResult> laningStep;
     private final PhaseAnalysisStrategy midStrategy;
     private final PhaseAnalysisStrategy lateStrategy;
 
@@ -21,13 +21,12 @@ public class AnalysisFacade {
         this.lateStrategy = lateStrategy;
     }
 
-    /** Драфт уже провалидирован A при сборке MatchDraft. */
     public AnalysisResponse analyze(MatchDraft draft) {
-        LaningResult laning = laningStep.apply(draft);                       // 1) laning (один раз)
+        LaningResult laning = laningStep.apply(draft);
         PhaseResult mid = midStrategy.analyze(
-                new PhaseInput(draft, laning.overallDiff(), 0));             // 2) mid <- laning
+                new PhaseInput(draft, laning.overallDiff(), 0));
         PhaseResult late = lateStrategy.analyze(
-                new PhaseInput(draft, laning.overallDiff(), mid.diff()));    // 3) late <- mid
+                new PhaseInput(draft, laning.overallDiff(), mid.diff()));
         return new AnalysisResponse(laning, mid, late, THRESHOLD_X, summary(draft, mid));
     }
 
