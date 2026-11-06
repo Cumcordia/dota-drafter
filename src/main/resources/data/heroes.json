@@ -1,0 +1,36 @@
+[
+        {"id":"anti_mage","name":"Anti-Mage","position":1,"lanePower":4,"tempo":2,"greed":10,"scaling":10,"teamfight":4,"push":5},
+        {"id":"juggernaut","name":"Juggernaut","position":1,"lanePower":7,"tempo":6,"greed":6,"scaling":8,"teamfight":6,"push":7},
+        {"id":"phantom_assassin","name":"Phantom Assassin","position":1,"lanePower":5,"tempo":4,"greed":9,"scaling":9,"teamfight":5,"push":3},
+        {"id":"luna","name":"Luna","position":1,"lanePower":7,"tempo":7,"greed":7,"scaling":8,"teamfight":7,"push":9},
+        {"id":"faceless_void","name":"Faceless Void","position":1,"lanePower":5,"tempo":5,"greed":8,"scaling":10,"teamfight":9,"push":4},
+        {"id":"drow_ranger","name":"Drow Ranger","position":1,"lanePower":7,"tempo":6,"greed":7,"scaling":9,"teamfight":6,"push":8},
+
+        {"id":"invoker","name":"Invoker","position":2,"lanePower":6,"tempo":6,"greed":8,"scaling":9,"teamfight":9,"push":5},
+        {"id":"puck","name":"Puck","position":2,"lanePower":7,"tempo":9,"greed":5,"scaling":7,"teamfight":9,"push":4},
+        {"id":"storm_spirit","name":"Storm Spirit","position":2,"lanePower":6,"tempo":7,"greed":8,"scaling":9,"teamfight":7,"push":3},
+        {"id":"queen_of_pain","name":"Queen of Pain","position":2,"lanePower":8,"tempo":9,"greed":5,"scaling":7,"teamfight":7,"push":5},
+        {"id":"sniper","name":"Sniper","position":2,"lanePower":8,"tempo":5,"greed":8,"scaling":9,"teamfight":4,"push":8},
+        {"id":"shadow_fiend","name":"Shadow Fiend","position":2,"lanePower":8,"tempo":8,"greed":7,"scaling":9,"teamfight":7,"push":9},
+
+        {"id":"axe","name":"Axe","position":3,"lanePower":7,"tempo":8,"greed":4,"scaling":7,"teamfight":9,"push":3},
+        {"id":"mars","name":"Mars","position":3,"lanePower":8,"tempo":8,"greed":5,"scaling":7,"teamfight":9,"push":5},
+        {"id":"tidehunter","name":"Tidehunter","position":3,"lanePower":7,"tempo":6,"greed":5,"scaling":8,"teamfight":10,"push":4},
+        {"id":"centaur_warrunner","name":"Centaur Warrunner","position":3,"lanePower":8,"tempo":8,"greed":4,"scaling":7,"teamfight":8,"push":6},
+        {"id":"underlord","name":"Underlord","position":3,"lanePower":8,"tempo":6,"greed":5,"scaling":8,"teamfight":8,"push":9},
+        {"id":"bristleback","name":"Bristleback","position":3,"lanePower":9,"tempo":8,"greed":6,"scaling":8,"teamfight":6,"push":7},
+
+        {"id":"earthshaker","name":"Earthshaker","position":4,"lanePower":5,"tempo":7,"greed":5,"scaling":8,"teamfight":10,"push":3},
+        {"id":"tusk","name":"Tusk","position":4,"lanePower":8,"tempo":9,"greed":3,"scaling":5,"teamfight":8,"push":3},
+        {"id":"rubick","name":"Rubick","position":4,"lanePower":6,"tempo":7,"greed":5,"scaling":8,"teamfight":9,"push":3},
+        {"id":"nyx_assassin","name":"Nyx Assassin","position":4,"lanePower":6,"tempo":8,"greed":3,"scaling":6,"teamfight":7,"push":2},
+        {"id":"hoodwink","name":"Hoodwink","position":4,"lanePower":8,"tempo":8,"greed":5,"scaling":7,"teamfight":7,"push":5},
+        {"id":"spirit_breaker","name":"Spirit Breaker","position":4,"lanePower":7,"tempo":9,"greed":3,"scaling":7,"teamfight":8,"push":3},
+
+        {"id":"crystal_maiden","name":"Crystal Maiden","position":5,"lanePower":7,"tempo":7,"greed":2,"scaling":5,"teamfight":8,"push":3},
+        {"id":"lion","name":"Lion","position":5,"lanePower":7,"tempo":8,"greed":3,"scaling":6,"teamfight":9,"push":2},
+        {"id":"dazzle","name":"Dazzle","position":5,"lanePower":8,"tempo":7,"greed":3,"scaling":7,"teamfight":7,"push":4},
+        {"id":"warlock","name":"Warlock","position":5,"lanePower":8,"tempo":5,"greed":4,"scaling":8,"teamfight":10,"push":7},
+        {"id":"witch_doctor","name":"Witch Doctor","position":5,"lanePower":8,"tempo":8,"greed":3,"scaling":7,"teamfight":9,"push":3},
+        {"id":"shadow_shaman","name":"Shadow Shaman","position":5,"lanePower":7,"tempo":9,"greed":3,"scaling":6,"teamfight":8,"push":10}
+        ]
