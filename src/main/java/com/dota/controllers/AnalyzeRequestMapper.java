@@ -10,6 +10,7 @@ import com.dota.draft.SoftSupportFactory;
 import com.dota.model.AnalyzeRequest;
 import com.dota.model.Hero;
 import com.dota.model.MatchDraft;
+import com.dota.draft.DraftLogger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -67,6 +68,7 @@ public class AnalyzeRequestMapper
         }
 
         DraftBuilder builder = new DraftBuilder();
+        builder.subscribe(new DraftLogger());
 
         for (AnalyzeRequest.HeroPick pick : picks) {
             if (pick == null) {

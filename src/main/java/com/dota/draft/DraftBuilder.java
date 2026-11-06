@@ -58,4 +58,7 @@ public class DraftBuilder {
     public void subscribe(DraftObserver observer) {
         subject.subscribe(observer);
     }
+    public void unsubscribe(DraftObserver observer) {
+        subject.unsubscribe(observer);
+    }
 }
