@@ -6,6 +6,6 @@ public record LaningResult(
         LaneResult bottom
 ) {
     public double overallDiff() {
-        return top.diff() + mid.diff() + bottom.diff();
+        return (top.diff() + mid.diff() + bottom.diff()) / 3.0;
     }
 }
