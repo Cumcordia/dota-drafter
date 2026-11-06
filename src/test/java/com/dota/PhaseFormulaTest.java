@@ -5,6 +5,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import com.dota.analysis.AnalysisFacade;
+import com.dota.analysis.LategameStrategy;
+import com.dota.analysis.MidgameStrategy;
+import com.dota.analysis.PhaseAnalysisStrategy;
+import com.dota.analysis.PhaseInput;
+import com.dota.analysis.ScoreComponent;
+import com.dota.analysis.TeamfightModifier;
+import com.dota.analysis.TempoGreedBase;
 
 import com.dota.model.*;
 
@@ -21,8 +29,8 @@ class PhaseFormulaTest {
     }
     private static MatchDraft swapped(MatchDraft m) { return new MatchDraft(m.dire(), m.radiant()); }
     private static LaningResult laning(double overall) {
-        LaneResult lane = new LaneResult(0, List.of());
-        return new LaningResult(lane, lane, lane, overall);
+        LaneResult lane = new LaneResult(overall, List.of());
+        return new LaningResult(lane, lane, lane);
     }
 
     private final PhaseAnalysisStrategy mid = new MidgameStrategy();
