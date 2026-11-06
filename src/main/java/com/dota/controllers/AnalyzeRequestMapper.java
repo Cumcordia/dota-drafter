@@ -1,5 +1,6 @@
 package com.dota.controllers;
 
+import com.dota.draft.*;
 import com.dota.model.AnalyzeRequest;
 import com.dota.model.Hero;
 import com.dota.model.MatchDraft;
@@ -7,44 +8,53 @@ import java.util.*;
 import java.util.function.Function;
 
 public class AnalyzeRequestMapper implements Function<AnalyzeRequest, MatchDraft> {
-    private final Function<String, Hero> heroById;
 
-    public AnalyzeRequestMapper(Function<String, Hero> heroById) { this.heroById = heroById; }
+    private final List<HeroFactory> factories = List.of(new CarryFactory(), new MidFactory(),
+            new OfflaneFactory(), new SoftSupportFactory(), new HardSupportFactory());
 
     @Override
     public MatchDraft apply(AnalyzeRequest req) {
-        List<Hero> radiant = toHeroes(req.radiant(), true);
-        List<Hero> dire = toHeroes(req.dire(), false);
+        List<Hero> radiant = buildTeam(req.radiant(), true);
+        List<Hero> dire = buildTeam(req.dire(), false);
+
         Set<String> ids = new HashSet<>();
-        for (Hero h : radiant) ids.add(h.id());
+        radiant.forEach(h -> ids.add(h.id()));
         for (Hero h : dire) {
-            if (!ids.add(h.id())) throw new IllegalArgumentException("Duplicate hero: " + h.id());
+            if (!ids.add(h.id())) throw new IllegalArgumentException("Hero picked in both teams: " + h.id());
         }
         return new MatchDraft(radiant, dire);
     }
 
-    private List<Hero> toHeroes(List<AnalyzeRequest.HeroPick> picks, boolean radiant) {
-        if (picks == null || picks.size() != 5) {
-            throw new IllegalArgumentException("Each team needs exactly 5 heroes");
-        }
-        List<Hero> result = new ArrayList<>();
-        Set<Integer> positions = new HashSet<>();
+    private List<Hero> buildTeam(List<AnalyzeRequest.HeroPick> picks, boolean radiant) {
+        if (picks == null) throw new IllegalArgumentException("Team is missing");
+        DraftBuilder builder = new DraftBuilder();
         for (AnalyzeRequest.HeroPick p : picks) {
-            Hero hero = heroById.apply(p.heroId());
-            if (hero == null) throw new IllegalArgumentException("Unknown hero: " + p.heroId());
-            if (hero.position() != p.position()) {
-                throw new IllegalArgumentException(p.heroId() + " is pos " + hero.position()
-                        + ", not " + p.position());
-            }
-            if (!positions.add(p.position())) {
-                throw new IllegalArgumentException("Duplicate position " + p.position());
+            if (p.position() < 1 || p.position() > 5) {
+                throw new IllegalArgumentException("Bad position: " + p.position());
             }
             if (!expectedLane(p.position(), radiant).equals(p.lane())) {
                 throw new IllegalArgumentException("Wrong lane for " + p.heroId() + ": " + p.lane());
             }
-            result.add(hero);
+            builder.addHero(create(factories.get(p.position() - 1), p.heroId()));
         }
-        return result;
+        try {
+            return builder.build();
+        } catch (IllegalStateException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
+    }
+
+    private Hero create(HeroFactory factory, String heroId) {
+        String[] candidates = {
+                heroId.replace('_', ' ').replace('-', ' '),
+                heroId.replace('_', '-')
+        };
+        for (String name : candidates) {
+            try {
+                return factory.createHero(name);
+            } catch (IllegalArgumentException ignored) {}
+        }
+        throw new IllegalArgumentException("Unknown hero for this position: " + heroId);
     }
 
     private static String expectedLane(int position, boolean radiant) {

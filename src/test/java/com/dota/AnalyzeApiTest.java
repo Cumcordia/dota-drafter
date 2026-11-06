@@ -5,10 +5,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.hamcrest.Matchers.closeTo;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,14 +32,18 @@ class AnalyzeApiTest {
         """;
 
     @Test
-    void demoRequest_returnsAllPhases() throws Exception {
+    void demoRequest_matchesHandCalculatedFixture() throws Exception {
         mvc.perform(post("/api/analyze").contentType(MediaType.APPLICATION_JSON).content(DEMO))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.laning.top.diff").exists())
-           .andExpect(jsonPath("$.laning.overallDiff").exists())
-           .andExpect(jsonPath("$.midgame.label").exists())
-           .andExpect(jsonPath("$.lategame.diff").exists())
-           .andExpect(jsonPath("$.thresholdX").value(1.5));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.laning.top.diff", closeTo(1.5, 1e-9)))
+        .andExpect(jsonPath("$.laning.mid.diff", closeTo(1.0, 1e-9)))
+        .andExpect(jsonPath("$.laning.bottom.diff", closeTo(0.5, 1e-9)))
+        .andExpect(jsonPath("$.laning.overallDiff", closeTo(1.0, 1e-9)))
+        .andExpect(jsonPath("$.midgame.diff", closeTo(1.59, 1e-9)))
+        .andExpect(jsonPath("$.midgame.label").value("Strong Radiant Advantage"))
+        .andExpect(jsonPath("$.lategame.diff", closeTo(0.218, 1e-9)))
+        .andExpect(jsonPath("$.lategame.label").value("Even"))
+        .andExpect(jsonPath("$.thresholdX").value(1.5));
     }
 
     @Test

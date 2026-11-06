@@ -6,13 +6,16 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
+import com.dota.analysis.AnalysisFacade;
+import com.dota.analysis.PhaseInput;
+import com.dota.analysis.ScoreComponent;
+import com.dota.analysis.TeamfightModifier;
+import com.dota.analysis.TempoGreedBase;
 import com.dota.model.*;
 
 class PhaseFormulaTest {
-
-    // TODO изменить после мержа
     private static Hero hero(double tempo, double greed, double scaling, double tf, double push) {
-        return new Hero("test", "Test", 1, 5, tempo, greed, scaling, tf, push); // lanePower = 5
+        return new Hero("test", "Test", 1, 5, tempo, greed, scaling, tf, push);
     }
     private static MatchDraft draft(double direScaling) {
         List<Hero> r = Collections.nCopies(5, hero(7, 4, 5, 6, 5));
@@ -20,13 +23,10 @@ class PhaseFormulaTest {
         return new MatchDraft(r, d);
     }
     private static MatchDraft swapped(MatchDraft m) { return new MatchDraft(m.dire(), m.radiant()); }
-    private static LaningResult laning(double overall) {
-        LaneResult lane = new LaneResult(0, List.of());
-        return new LaningResult(lane, lane, lane, overall);
+    private static LaningResult laning(double each) {
+        LaneResult l = new LaneResult(each, "test");
+        return new LaningResult(l, l, l);
     }
-
-    private final PhaseAnalysisStrategy mid = new MidgameStrategy();
-    private final PhaseAnalysisStrategy late = new LategameStrategy();
 
     @Test
     void midgame_fixedExample() {
@@ -54,7 +54,7 @@ class PhaseFormulaTest {
         PhaseInput a = new PhaseInput(draft(7.5), 2.0, 4.9);
         PhaseInput b = new PhaseInput(draft(6.5), 2.0, 4.9);
         assertEquals(1.0, late.analyze(b).diff() - late.analyze(a).diff(), 1e-9);
-        assertEquals(mid.analyze(a).diff(), mid.analyze(b).diff(), 1e-9); // mid не зависит от scaling
+        assertEquals(mid.analyze(a).diff(), mid.analyze(b).diff(), 1e-9);
     }
 
     @Test
