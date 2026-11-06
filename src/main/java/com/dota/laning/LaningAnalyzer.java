@@ -156,55 +156,10 @@ public class LaningAnalyzer {
     }
 
     public double calculateSynergy(Hero first, Hero second) {
-        String a = first.id();
-        String b = second.id();
-
-        if ((a.equals("axe") && b.equals("tusk"))
-                || (a.equals("tusk") && b.equals("axe"))) {
-            return 1.5;
-        }
-
-        if ((a.equals("juggernaut") && b.equals("crystal_maiden"))
-                || (a.equals("crystal_maiden") && b.equals("juggernaut"))) {
-            return 1.5;
-        }
-
-        if ((a.equals("mars") && b.equals("hoodwink"))
-                || (a.equals("hoodwink") && b.equals("mars"))) {
-            return 1.5;
-        }
-
-        return 0.0;
+        return LaneRuleCatalog.synergy(first.id(), second.id());
     }
 
     public double calculateMatchupBonus(Hero radiant, Hero dire) {
-        String a = radiant.id();
-        String b = dire.id();
-
-        if (a.equals("axe") && b.equals("phantom_assassin")) {
-            return 1.0;
-        }
-
-        if (a.equals("phantom_assassin") && b.equals("axe")) {
-            return -1.0;
-        }
-
-        if (a.equals("anti_mage") && b.equals("storm_spirit")) {
-            return 1.0;
-        }
-
-        if (a.equals("storm_spirit") && b.equals("anti_mage")) {
-            return -1.0;
-        }
-
-        if (a.equals("underlord") && b.equals("phantom_assassin")) {
-            return 1.0;
-        }
-
-        if (a.equals("phantom_assassin") && b.equals("underlord")) {
-            return -1.0;
-        }
-
-        return 0.0;
+        return LaneRuleCatalog.matchup(radiant.id(), dire.id());
     }
 }
