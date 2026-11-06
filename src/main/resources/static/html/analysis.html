@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dota 2 Draft Analyzer Lite</title>
+  <link rel="stylesheet" href="/src/main/resources/static/css/analysis.css">
+</head>
+<body>
+<main id="app">
+  <header>
+    <h1>Dota 2 Draft Analyzer Lite</h1>
+    <p class="muted">Rule-based comparison of two drafts under equal execution. Not a win probability.</p>
+  </header>
+
+  <div class="layout">
+    <section aria-labelledby="pool-title">
+      <h2 id="pool-title">Hero pool</h2>
+      <p class="muted">Pick a slot on the right (it is highlighted), then a hero of that position.</p>
+      <div id="pool"></div>
+    </section>
+
+    <section aria-labelledby="teams-title">
+      <h2 id="teams-title">Teams</h2>
+      <div id="teams"></div>
+      <div class="actions">
+        <button id="analyze" type="button" disabled>Analyze</button>
+        <button id="demo" type="button" class="secondary">Fill demo draft</button>
+        <button id="reset" type="button" class="secondary">Reset</button>
+      </div>
+      <p id="status" class="muted" role="status"></p>
+      <p id="error" class="error" role="alert" hidden></p>
+    </section>
+  </div>
+
+  <section id="result" hidden aria-labelledby="result-title">
+    <h2 id="result-title">Result</h2>
+    <p id="stale-note" class="stale-note" hidden>Draft changed: press Analyze again to refresh.</p>
+    <p class="muted">Bar to the right: Radiant ahead. Bar to the left: Dire ahead.</p>
+    <h3>Laning</h3>
+    <div id="lanes" class="grid"></div>
+    <h3>Phases</h3>
+    <div id="phases" class="grid"></div>
+    <h3>Summary</h3>
+    <ul id="summary"></ul>
+    <h3>Win conditions</h3>
+    <ul id="conditions"></ul>
+    <p class="muted">Win conditions are hints built on this page from the signs of the diffs; the API does not return them.</p>
+  </section>
+</main>
+<script src="/src/main/resources/static/js/analysis.js"></script>
+</body>
+</html>
