@@ -150,20 +150,38 @@ const imageUrl = hero => HERO_IMAGES[norm(hero.id)] || IMG_DIR + hero.id + IMG_E
   }
 
   function pick(hero) {
-    if (active < 0) return;
+    if (busy || active < 0) return;
+
+
     slots[active].hero = hero;
     active = nextEmpty(active);
     update();
   }
 
   function fillDemo() {
-    slots.forEach(s => { s.hero = HERO_BY_ID.get(DEMO[s.team][s.position]) || null; });
+    if (busy || HEROES.length === 0) return;
+
+
+    slots.forEach(slot => {
+      slot.hero = HERO_BY_ID.get(
+        DEMO[slot.team][slot.position]
+      ) || null;
+    });
+
+
     active = -1;
     update();
   }
 
   function reset() {
-    slots.forEach(s => { s.hero = null; });
+    if (busy) return;
+
+
+    slots.forEach(slot => {
+      slot.hero = null;
+    });
+
+
     active = 0;
     update();
   }
@@ -183,21 +201,47 @@ const imageUrl = hero => HERO_IMAGES[norm(hero.id)] || IMG_DIR + hero.id + IMG_E
 
   function updatePool() {
     const slot = active >= 0 ? slots[active] : null;
-    const taken = new Set(slots.filter(s => s.hero).map(s => s.hero.id));
-    HEROES.forEach(h => {
-      const b = poolButtons.get(h.id);
-      const isPicked = taken.has(h.id);
-      const wrongPos = !!slot && h.position !== slot.position;
-      b.disabled = !slot || wrongPos || isPicked;
-      b.classList.toggle('picked', isPicked);
-      b.classList.toggle('dim', wrongPos);
+    const taken = new Set(
+      slots.filter(s => s.hero).map(s => s.hero.id)
+    );
+
+
+    HEROES.forEach(hero => {
+      const button = poolButtons.get(hero.id);
+      const isPicked = taken.has(hero.id);
+      const wrongPosition = !!slot && hero.position !== slot.position;
+
+
+      button.disabled = busy || !slot || wrongPosition || isPicked;
+      button.classList.toggle('picked', isPicked);
+      button.classList.toggle('dim', wrongPosition);
     });
   }
 
   function updateControls() {
     const n = slots.filter(s => s.hero).length;
     analyzeBtn.disabled = n < slots.length || busy;
-    $('status').textContent = n < slots.length ? 'Picked ' + n + '/' + slots.length + ' heroes' : 'Draft is complete';
+    analyzeBtn.textContent = busy ? 'Analyzing...' : 'Analyze';
+
+
+    $('demo').disabled = busy || HEROES.length === 0;
+    $('reset').disabled = busy;
+
+
+    slotViews.forEach(view => {
+      view.main.disabled = busy;
+      view.clear.disabled = busy;
+    });
+
+
+    $('status').textContent = busy
+      ? 'Analysis in progress...'
+      : n < slots.length
+        ? 'Picked ' + n + '/' + slots.length + ' heroes'
+        : 'Draft is complete';
+
+
+    updatePool();
   }
 
   function markStale() {
@@ -283,13 +327,52 @@ const imageUrl = hero => HERO_IMAGES[norm(hero.id)] || IMG_DIR + hero.id + IMG_E
     return card;
   }
 
-  function winConditions(d) {
-    const items = [];
-    const mid = d.midgame.diff, late = d.lategame.diff;
-    if (Math.abs(mid) >= 0.5) items.push((mid > 0 ? 'Radiant' : 'Dire') + ': use the midgame tempo to apply pressure before the late game.');
-    if (Math.abs(late) >= 0.5) items.push((late > 0 ? 'Radiant' : 'Dire') + ': stretch the game to the late stage, where the draft scales better.');
-    if (!items.length) items.push('The drafts are close: execution decides the game.');
-    return items;
+  function winConditions(data) {
+    const recommendations = [];
+
+
+    const teams = [
+      { name: 'Radiant', sign: 1 },
+      { name: 'Dire', sign: -1 }
+    ];
+
+
+    teams.forEach(team => {
+      const mid = data.midgame.diff * team.sign;
+      const late = data.lategame.diff * team.sign;
+
+
+      let recommendation;
+
+
+      if (mid >= 0.5 && late <= -0.5) {
+        recommendation =
+          'Use the midgame tempo advantage to take objectives ' +
+          'and try to finish before the opponent reaches its stronger late game.';
+      } else if (mid >= 0.5) {
+        recommendation =
+          'Use the midgame tempo advantage to control the map, ' +
+          'take objectives and carry the lead into the next phase.';
+      } else if (late >= 0.5) {
+        recommendation =
+          'Protect the farming cores and avoid unnecessary losses ' +
+          'to reach the late game, where the draft scales better.';
+      } else if (mid <= -0.5 || late <= -0.5) {
+        recommendation =
+          'Avoid unfavorable direct fights. Look for isolated targets, ' +
+          'defend key objectives and use enemy mistakes to recover.';
+      } else {
+        recommendation =
+          'There is no clear phase advantage. Prioritize vision, ' +
+          'coordinated fights and objective control.';
+      }
+
+
+      recommendations.push(team.name + ': ' + recommendation);
+    });
+
+
+    return recommendations;
   }
 
   function fillList(id, items) {
