@@ -17,6 +17,40 @@
   let HERO_BY_ID = new Map();
   const norm = id => String(id).replace(/_/g, '-');
 
+  const HERO_IMAGES = {
+  'anti-mage': 'https://static.wikia.nocookie.net/dota2_gamepedia/images/8/8e/Anti-Mage_icon.png/revision/latest?cb=20200916215957', 
+  'juggernaut': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvGzDX18-URJsLhq2sjDEuZdpfZp03pKp6hWTla1hE_w&s=10', 
+  'phantom-assassin': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJGd4wPm-eivTceuhEgI7zQ78zesulSuCIxzbDG5HvpA&s=10', 
+  'luna': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2h6pvNoHytg11WUeOOru4h1ZzTCTxceac7ArEuz4DPA&s=10', 
+  'faceless-void': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaboGB8DZOSu04pqC_kFJYP3CNWms0I9oi3UG0ocVjaQ&s=10', 
+  'drow-ranger': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQId5uvG0Fx8uPzZ6IQg4LC61vjYTWOdFU_8YCzgoaC7A&s=10',
+  'invoker': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVyffGBXfYCLm29PE8pdoJ3uE6vA63Tbx_USApRglJiw&s=10', 
+  'puck': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI1FowPbSGt8A2zJeJJCIoOyVP6VhMdWbafRmG2-qgOQ&s=10', 
+  'storm-spirit': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZOvUWmJJb70B1DzLSIz2K3QkczQqj5Sf-rsULLZ_5tA&s=10', 
+  'queen-of-pain': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxapd7-AqxaA3iVPdQWBO9BulM2WjPHyK69zCGA5E_Lw&s=10', 
+  'sniper': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq7w3Ruxpuzy-qSKETiYh9s0b2S8erbWD2OZT9zg_2Jg&s=10', 
+  'shadow-fiend': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRC6sBOhatKJIHLx-iutQDQCBAe8R_XtQDFB1tjcF1r1g&s=10',
+  'axe': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY2sj76kTiFRF1rLS__KjTdCa_NsQbtS8zP5h4Dju1gA&s=10', 
+  'mars': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ88hpd0jJbckc3oriEcHmz04hm_eR38uEfUV2CmBvbkw&s=10', 
+  'tidehunter': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnGhNM8NrfMaGmvxng1buVs1yIzfOwv3pJ1jpESwhOmg&s=10', 
+  'centaur-warrunner': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0dCtsNrmwNtLiemuo8J4AKLsuCYPhqBTzHZDP5aTVcA&s=10', 
+  'underlord': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSldfEHwyUdGZarvTTLtGlfz8Cbv1rzz_KmSTspvcPqew&s=10', 
+  'bristleback': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg6X-Te6h4LbOWDJMMRf_MfAgfpN13eXK8BPVskxjMjg&s=10',
+  'earthshaker': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWnaeS7X0mDzMtWpbYVWJ-PrK2heU0eNNqA48ey2v4Zg&s=10', 
+  'tusk': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAjSNBeT4ioOsLwRzNGk16r5ic3Au4LWv0qGsHVvqrpg&s=10', 
+  'rubick': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiCpR6iW97sx6WBR29JFSZOOJNhA8lFfHXfqwbe2XI-w&s=10', 
+  'nyx-assassin': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCzZTd5FNfmt5Gm1qeAfbfNnM3SnBbQ_WNfr9y7D4jVw&s=10', 
+  'hoodwink': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwxgfZOVFOcfb6y4hFmYgKZpSDB8u_4-_E0GFJctb2gA&s=10', 
+  'spirit-breaker': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNa2gyUkNNk4eAmUDBJG0AUtZfzz81w2AqtUFrxc57KQ&s=10',
+  'crystal-maiden': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQILKhCaBka7RgfOrc8jh5DKOqFKQvSHdmk8UJAG3CC-g&s=10', 
+  'lion': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQblD-dKWw2mJdtFWtFuPZmToxzEoQLE_5kA5ZnKgTS8A&s=10', 
+  'dazzle': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqJkFOvztmtQJFkp0aH6fchBz98P-9CKwFkNLsBGTH6w&s=10', 
+  'warlock': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3ElcqaT_tEhzsdZbQyRJdy-sJuZknxI6tO0DWSYKaHQ&s=10', 
+  'witch-doctor': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbTw4odUomUZbLzu3DGrVrmAmD5-xpC__Y3KZHkpt40g&s=10', 
+  'shadow-shaman': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-QO1jtuqEOQW5uz7hxfHv4m8jjyhmSDC4P6ip94vHwQ&s=10'
+};
+const imageUrl = hero => HERO_IMAGES[norm(hero.id)] || IMG_DIR + hero.id + IMG_EXT;
+
   const SLOT_POSITIONS = {
     radiant: { TOP: [3, 4], MID: [2], BOTTOM: [1, 5] },
     dire:    { TOP: [1, 5], MID: [2], BOTTOM: [3, 4] }
@@ -52,7 +86,8 @@
       img.remove();
       wrap.textContent = hero.name.split(/[\s-]+/).map(w => w[0]).join('').slice(0, 2);
     });
-    img.src = IMG_DIR + hero.id + IMG_EXT;
+    img.referrerPolicy = 'no-referrer';
+    img.src = imageUrl(hero);
     wrap.appendChild(img);
     return wrap;
   }
